@@ -16,6 +16,7 @@ class Particle(PfParticle):
         if stride is None:
             stride = pf_param.MAX_STRIDE * np.random.rand()
         else:
-            stride += np.random.normal(scale=param.STRIDE_SD)
+            # stride += np.random.normal(scale=param.STRIDE_SD)
+            pass
 
         self._walk(angle, stride)

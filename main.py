@@ -19,6 +19,7 @@ import deep_pdr.script.utility as dpdr_util
 from deep_pdr.script.direct_model import SimpleCNN
 from deep_pdr.script.speed_model import FusionLSTM
 import deep_pdr.script.parameter as dpdr_param
+import simple_pdr.script.parameter as spdr_param
 
 
 def _set_main_params(conf: dict[str, Any]) -> None:
@@ -44,7 +45,7 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None]) -> 
     device = dpdr_util.get_device(gpu_id)
     print(f"main.py: device is {device}")
     
-    inertial_log = DpdrLog(BEGIN, END, path.join(dpdr_param.ROOT_DIR, "log/", INERTIAL_LOG_FILE))
+    inertial_log = DpdrLog(BEGIN, END, path.join(spdr_param.ROOT_DIR, "log/", INERTIAL_LOG_FILE))
     pdr_result_dir = dpdr_util.make_result_dir(RESULT_DIR_NAME)
     
     # print("main.py: predicting direction")
@@ -91,7 +92,10 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None]) -> 
 
         for i in range(PARTICLE_NUM):
             particles[i] = Particle(map.img, estim_pos, poses[i], directs[i])
-            particles[i].walk(None, win.particle_stride)
+            if win.particle_stride is None:
+                particles[i].random_walk()
+            else:
+                particles[i].walk(None, win.particle_stride)
             particles[i].set_likelihood(map.beacon_pos_list, win.strength_weight_list, win.subject_dist_list)
 
         poses, directs = resample(particles)
@@ -118,7 +122,7 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None]) -> 
                     lost_ts_hist = np.empty(0, dtype=datetime)
                     map.draw_truth_pos(truth.update_err_hist(t, estim_pos, map.resolution, False), True)
 
-        map.show()
+        # map.show()
 
         if pf_param.ENABLE_SAVE_VIDEO:
             map.record()
@@ -134,7 +138,7 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None]) -> 
         pf_util.write_conf(conf, result_dir)
     if pf_param.TRUTH_LOG_FILE is not None:
         truth.export_err()
-    map.show(0)
+    # map.show(0)
 
 if __name__ == "__main__":
     import argparse

@@ -10,7 +10,11 @@ class Window(PfWindow):
     def __init__(self, current: datetime, log: Log, resolution: np.float16, speed: np.ndarray, speed_ts: np.ndarray) -> None:
         super().__init__(current, log, resolution)
 
-        self.particle_stride: np.float32 = pf_util.conv_from_meter_to_pixel(self._slice_speed(current, speed_ts, speed).mean(), resolution) * pf_param.WIN_STRIDE    # [meter]
+        sliced_speed = self._slice_speed(current, speed_ts, speed)
+        if len(sliced_speed) > 0:
+            self.particle_stride: np.float32 = pf_util.conv_from_meter_to_pixel(sliced_speed.mean(), resolution) * pf_param.WIN_STRIDE    # [meter]
+        else:
+            self.particle_stride = None
 
     def _slice_speed(self, current, ts, val) -> np.ndarray:
         slice_time_index = len(ts)
