@@ -1,0 +1,9 @@
+[submodule "particle_filter"]
+	path = particle_filter
+	url = https://github.com/kazumakano/particle_filter.py.git
+[submodule "deep_pdr"]
+	path = deep_pdr
+	url = https://github.com/kazumakano/deep_pdr.py.git
+[submodule "simple_pdr"]
+	path = simple_pdr
+	url = https://github.com/kazumakano/simple_pdr.py.git
