@@ -135,7 +135,7 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None]) -> 
     if pf_param.ENABLE_SAVE_VIDEO:
         map.save_video()
     if pf_param.ENABLE_WRITE_CONF:
-        pf_util.write_conf(conf, result_dir)
+        pf_util.write_conf(conf, pf_result_dir)
     if pf_param.TRUTH_LOG_FILE is not None:
         truth.export_err()
     # map.show(0)
