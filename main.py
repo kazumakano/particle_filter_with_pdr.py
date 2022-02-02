@@ -91,7 +91,7 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None], ena
         win = Window(t, rssi_log, map.resolution, speed, speed_ts)
 
         for i in range(PARTICLE_NUM):
-            particles[i] = Particle(map.img, estim_pos, poses[i], directs[i])
+            particles[i] = Particle(map, poses[i], directs[i], estim_pos)
             if win.particle_stride is None:
                 particles[i].random_walk()
             else:
