@@ -12,7 +12,7 @@ class Window(PfWindow):
 
         sliced_speed = self._slice_speed(current, speed_ts, speed)
         if len(sliced_speed) > 0:
-            self.particle_stride: np.float32 = pf_util.conv_from_meter_to_pixel(sliced_speed.mean(), resolution) * pf_param.WIN_STRIDE    # [meter]
+            self.particle_stride: np.float32 = pf_util.meter2pixel(sliced_speed.mean(), resolution) * pf_param.WIN_STRIDE    # [meter]
         else:
             self.particle_stride = None
 
