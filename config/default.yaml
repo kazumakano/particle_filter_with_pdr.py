@@ -1,0 +1,70 @@
+begin: "2022-01-07 13:43:54"
+end: "2022-01-07 13:54:19"
+log_file: aaa
+init_direct: 270
+init_direct_sd: 0
+init_pos: [1155, 1000]
+init_pos_sd: 0
+particle_num: 128
+
+win_size: 2
+
+enable_clear_map: True
+enable_draw_beacons: True
+enable_save_img: True
+enable_save_video: True
+frame_rate: 1
+map_conf_file: ptokai3.yaml
+map_img_file: ptokai3.pgm
+map_show_policy: 3
+result_dir_name: HCII
+win_stride: 1
+
+direct_sd: 1
+max_particle_stride: 25
+rand_pos_range: 375
+
+lost_resample_policy: 1
+lost_trajectory_policy: 2
+
+truth_log_file: take2.pkl
+
+dist_sd: 37.5
+el_correction: 2
+enable_write_conf: True
+estim_pos_policy: 2
+neg_weight_coef: 0
+propag_coef: 5
+
+win_policy: 1
+
+# simple pdr
+gyro_drift: 0
+rotate_ax: 3
+
+default_speed: 1
+max_status_interval: 0.5
+min_step_interval: 0.5
+stature: 1.7
+step_len_coef: 0.42
+step_begin_acc_thresh: 1.05
+pos_peak_acc_thresh: 1.11
+neg_peak_acc_thresh: 0.93
+step_end_acc_thresh: 0.97
+
+freq: 100
+pdr_win_stride: 0.1
+
+# deep pdr
+speed_model_hp_file: fusion_LSTM.yaml
+speed_model_state_file: fusion_LSTM.pt
+direct_model_hp_file: simple_CNN.yaml
+direct_model_state_file: simple_CNN.pt
+direct_batch_size: 1024
+speed_batch_size: 1024
+
+inertial_log_file: tone-2_inertial.pkl
+rssi_log_file: 2022-01-07_tone-2.csv
+enable_pdr_walk: True
+stride_sd: 0
+
