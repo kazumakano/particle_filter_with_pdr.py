@@ -16,8 +16,8 @@ from particle_filter.script.resample import resample
 from particle_filter.script.truth import Truth
 from script.window import Window
 import deep_pdr.script.utility as dpdr_util
-from deep_pdr.script.direct_model import SimpleCNN
-from deep_pdr.script.speed_model import FusionLSTM
+from deep_pdr.script.direction_model import CNN
+from deep_pdr.script.speed_model import DualCNNLSTM
 import deep_pdr.script.parameter as dpdr_param
 import simple_pdr.script.parameter as spdr_param
 
@@ -58,12 +58,10 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None], ena
     # dpdr_util.write_direct(degs, trigonometrics, direct_ts, pdr_result_dir)
 
     print("main.py: predicting speed")
-    speed_model = FusionLSTM(**dpdr_util.load_hp(path.join(dpdr_param.ROOT_DIR, "model/", SPEED_MODEL_HP_FILE)))
+    speed_model = DualCNNLSTM(16, 12, 64, 1)
     speed_model.load_state_dict(torch.load(path.join(dpdr_param.ROOT_DIR, "model/", SPEED_MODEL_STATE_FILE)))
-    speedor = SpeedPredictor(inertial_log.val[:, :3], device, speed_model, inertial_log.ts)
-    speed, speed_ts = speedor.pred()
-    dpdr_util.plot_speed(speed, speed_ts, pdr_result_dir)
-    dpdr_util.write_speed(speed, speed_ts, pdr_result_dir)
+    speedor = SpeedPredictor(device, inertial_log, speed_model, pdr_result_dir)
+    speedor.export()
     
     rssi_log = PfLog(BEGIN, END, path.join(pf_param.ROOT_DIR, "log/observed/", RSSI_LOG_FILE))
     pf_result_dir = pf_util.make_result_dir(None if pdr_result_dir is None else path.basename(pdr_result_dir))
@@ -88,7 +86,7 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None], ena
     t = BEGIN
     while t <= END:
         print(f"main.py: {t.time()}")
-        win = Window(t, rssi_log, map.resolution, speed, speed_ts)
+        win = Window(t, rssi_log, map.resolution, speedor.speed, speedor.ts)
 
         for i in range(PARTICLE_NUM):
             particles[i] = Particle(map, poses[i], directs[i], estim_pos)
