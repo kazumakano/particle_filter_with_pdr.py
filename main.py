@@ -29,9 +29,7 @@ def _set_main_params(conf: dict[str, Any]) -> None:
     END = datetime.strptime(conf["end"], "%Y-%m-%d %H:%M:%S")
     INERTIAL_LOG_FILE = str(conf["inertial_log_file"])
     RSSI_LOG_FILE = str(conf["rssi_log_file"])
-    DIRECT_MODEL_HP_FILE = str(conf["direct_model_hp_file"])
-    DIRECT_MODEL_STATE_FILE = str(conf["direct_model_state_file"])
-    SPEED_MODEL_HP_FILE = str(conf["speed_model_hp_file"])
+    # DIRECT_MODEL_STATE_FILE = str(conf["direct_model_state_file"])
     SPEED_MODEL_STATE_FILE = str(conf["speed_model_state_file"])
     INIT_DIRECT = np.float16(conf["init_direct"])
     INIT_DIRECT_SD = np.float16(conf["init_direct_sd"])
@@ -45,7 +43,7 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None], ena
     device = dpdr_util.get_device(gpu_id)
     print(f"main.py: device is {device}")
     
-    inertial_log = DpdrLog(BEGIN, END, path.join(spdr_param.ROOT_DIR, "log/", INERTIAL_LOG_FILE))
+    inertial_log = DpdrLog(BEGIN, END, path.join(dpdr_param.ROOT_DIR, "log/", INERTIAL_LOG_FILE))
     pdr_result_dir = dpdr_util.make_result_dir(RESULT_DIR_NAME)
     
     # print("main.py: predicting direction")
