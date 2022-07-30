@@ -46,7 +46,6 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None], ena
     inertial_log = DpdrLog(BEGIN, END, path.join(dpdr_param.ROOT_DIR, "log/", INERTIAL_LOG_FILE))
     pdr_result_dir = dpdr_util.make_result_dir(RESULT_DIR_NAME)
     
-    # print("main.py: predicting direction")
     # direct_model = SimpleCNN(**dpdr_util.load_hp(path.join(dpdr_param.ROOT_DIR, "model/", DIRECT_MODEL_HP_FILE)))
     # direct_model.load_state_dict(torch.load(path.join(dpdr_param.ROOT_DIR, "model/", DIRECT_MODEL_STATE_FILE))["model_state_dict"])
     # director = DirectPredictor(device, direct_model, inertial_log.ts, inertial_log.val)
@@ -55,7 +54,6 @@ def particle_filter_with_pdr(conf: dict[str, Any], gpu_id: Union[int, None], ena
     # dpdr_util.plot_direct(degs, direct_ts, pdr_result_dir)
     # dpdr_util.write_direct(degs, trigonometrics, direct_ts, pdr_result_dir)
 
-    print("main.py: predicting speed")
     speed_model = DualCNNLSTM(16, 12, 64, 1)
     speed_model.load_state_dict(torch.load(path.join(dpdr_param.ROOT_DIR, "model/", SPEED_MODEL_STATE_FILE)))
     speedor = SpeedPredictor(device, inertial_log, speed_model, pdr_result_dir)
