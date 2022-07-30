@@ -5,10 +5,9 @@ from deep_pdr.script.parameter import set_params as set_dpdr_params
 
 
 def _set_particle_params(conf: dict[str, Any]) -> None:
-    global  ENABLE_PDR_WALK, STRIDE_SD
+    global STRIDE_SD
 
-    ENABLE_PDR_WALK = bool(conf["enable_pdr_walk"])
-    STRIDE_SD = np.float16(conf["stride_sd"])
+    STRIDE_SD = np.float32(conf["stride_sd"])
 
 def set_params(conf_file: Union[str, None] = None) -> dict[str, Any]:
     global ROOT_DIR

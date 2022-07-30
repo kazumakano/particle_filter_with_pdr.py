@@ -3,8 +3,6 @@ import numpy as np
 import particle_filter.script.parameter as pf_param
 from particle_filter.script.particle import Particle as PfParticle
 from . import parameter as param
-from particle_filter.script.map import Map
-import particle_filter.script.utility as pf_util
 
 
 class Particle(PfParticle):
