@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta
-import particle_filter.script.parameter as pf_param
-import simple_pdr.script.parameter as spdr_param
 import numpy as np
+import particle_filter.script.parameter as pf_param
 import particle_filter.script.utility as pf_util
+import simple_pdr.script.parameter as spdr_param
 from particle_filter.script.log import Log
 from particle_filter.script.window import Window as PfWindow
+
 
 class Window(PfWindow):
     def __init__(self, current: datetime, log: Log, resolution: np.float16, speed: np.ndarray, speed_ts: np.ndarray) -> None:
