@@ -18,18 +18,18 @@ class Window(PfWindow):
             self.particle_stride = None
 
     def _slice_speed(self, current: datetime, ts: np.ndarray, val: np.ndarray) -> np.ndarray:
-        slice_time_index = len(ts)
+        slice_time_idx = len(ts)
         for i, t in enumerate(ts):
             if t >= current - timedelta(seconds=pf_param.WIN_STRIDE - 1 / spdr_param.FREQ):
-                slice_time_index = i
+                slice_time_idx = i
                 break
-        val = val[slice_time_index:]
+        sliced_ts = ts[slice_time_idx:]
+        sliced_val = val[slice_time_idx:]
 
-        slice_time_index = -1
-        for i, t in enumerate(ts[slice_time_index:]):
+        slice_time_idx = len(sliced_ts)
+        for i, t in enumerate(sliced_ts):
             if t > current:
-                slice_time_index = i
+                slice_time_idx = i
                 break
-        val = val[:slice_time_index]
 
-        return val
+        return sliced_val[:slice_time_idx]
