@@ -20,7 +20,7 @@ class Window(PfWindow):
     def _slice_speed(self, current: datetime, ts: np.ndarray, val: np.ndarray) -> np.ndarray:
         slice_time_idx = len(ts)
         for i, t in enumerate(ts):
-            if t >= current - timedelta(seconds=pf_param.WIN_STRIDE - 1 / spdr_param.FREQ):
+            if t >= current - timedelta(seconds=pf_param.WIN_STRIDE):
                 slice_time_idx = i
                 break
         sliced_ts = ts[slice_time_idx:]
